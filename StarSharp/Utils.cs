@@ -27,5 +27,14 @@ namespace StarSharp
 			Console.WriteLine(text);
 			Console.ForegroundColor = ConsoleColor.Gray;
 		}
+
+		public static string ByteArrayToString(byte[] buffer)
+		{
+			System.Text.StringBuilder sb = new System.Text.StringBuilder();
+			foreach (byte b in buffer)
+				sb.Append(b.ToString("X2"));
+
+			return (sb.ToString());
+		}
 	}
 }
