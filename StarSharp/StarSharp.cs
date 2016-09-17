@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -52,6 +53,12 @@ namespace StarSharp
 			get; set;
 		}
 
+		internal int ParentProcessId;
+
+		public static Server Server;
+		public static ServerThread MainServer;
+		public static Thread ServerThread;
+
 		static void Main(string[] args)
 		{
 			string[] lines = System.IO.File.ReadAllLines("title");
@@ -61,6 +68,23 @@ namespace StarSharp
 			}
 			Instance.Utils.CustomText("\t\t   " + $"Version {Version} - {Edition} - \n\n\n", ConsoleColor.DarkGreen);
 			Instance.Utils.ConsoleInfo("Initializing StarSharp server...");
+
+			if (File.Exists("starbound_server.pid"))
+			{
+				int processId = Convert.ToInt32(File.ReadAllText("starbound_server.pid"));
+				Process proc = null;
+				try
+				{
+					proc = Process.GetProcessById(processId);
+				}
+				catch { }
+				if (proc != null)
+				{
+					proc.Kill();
+				}
+				File.Delete("starbound_server.pid");
+			}
+
 
 			Instance.Config = Config.Load();
 
@@ -72,6 +96,13 @@ namespace StarSharp
 			}
 
 			IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(Instance.Config.ProxyIP), Instance.Config.ProxyPort);
+
+			Server = new Server();
+			Server.StartServer();
+
+			MainServer = new ServerThread();
+			ServerThread = new Thread(new ThreadStart(MainServer.Run));
+			ServerThread.Start();
 
 			while (true)
 			{
