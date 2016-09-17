@@ -73,6 +73,8 @@ namespace StarSharp
 
 			IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(Instance.Config.ProxyIP), Instance.Config.ProxyPort);
 
+			SocketListener socketListener = new SocketListener(Instance.Config.MaxClients, Instance.Config.BufferSize);
+			socketListener.Start(localEndPoint.Port);
 			while (true)
 			{
 

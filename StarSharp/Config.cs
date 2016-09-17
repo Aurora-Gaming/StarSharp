@@ -15,6 +15,7 @@ namespace StarSharp
 		public short ProxyPort { get; set; } = 21025;
 		public int MaxClients { get; set; } = 25;
 		public string ServerName { get; set; } = "StarSharp Server";
+		public int BufferSize { get; set; } = 2048;
 
 		public static Config Load()
 		{
