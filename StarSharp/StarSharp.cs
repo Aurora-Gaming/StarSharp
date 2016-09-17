@@ -20,7 +20,6 @@ namespace StarSharp
 			}
 		}
 		public Utils Utils = new Utils();
-		internal int maxSimultaneousClientsThatWereConnected;
 
 		public static string Version
 		{
@@ -53,9 +52,6 @@ namespace StarSharp
 			get; set;
 		}
 
-        public static Int32 mainSessionId = 1000000000;
-		public static Int32 mainTransMissionId = 10000;
-
 		static void Main(string[] args)
 		{
 			string[] lines = System.IO.File.ReadAllLines("title");
@@ -76,10 +72,6 @@ namespace StarSharp
 			}
 
 			IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(Instance.Config.ProxyIP), Instance.Config.ProxyPort);
-
-			SocketListenerSettings listenerSettings = new SocketListenerSettings(
-				Instance.Config.MaxClients, 1, 100, 10, 4, 25, 4, 2, localEndPoint);
-			SocketListener socketListener = new SocketListener(listenerSettings);
 
 			while (true)
 			{
